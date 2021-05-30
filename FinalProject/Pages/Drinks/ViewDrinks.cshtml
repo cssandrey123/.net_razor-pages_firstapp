@@ -1,0 +1,65 @@
+@page
+@model FinalProject.Pages.Drinks.ViewDrinksModel
+@{ ViewData["Title"] = "ViewDrinks"; }
+
+<form id="form" method="post">
+    <div class="filter-group-wrapper">
+        <div style="width:500px" class="input-group">
+            <input type="text" class="form-control" id="drinkName" name="drinkName" placeholder="Search drink by name">
+            <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Search by name</button>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">All available categories</label>
+
+            <select onchange="this.form.submit()" class="form-control"  id="categories" name="categories">
+                @foreach (var category in @Model.availableCategories)
+                {
+                    
+                    @if (@Model.selectedCategory == @category)
+                    {
+                        <option selected>@category</option>
+                    }
+                    else
+                    {
+                        <option>@category</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+</form>
+
+@if (@Model.filteredDrinks.Count == 0)
+{
+    <div>Sorry but we couldn't find any drink based on this criteria</div>
+}
+else
+{
+    <div>Here are your matched drinks</div>
+}
+
+<div class="scrolable-content">
+    <div class="row">
+    @foreach (var group in @Model.filteredDrinks)
+    {
+    <div class="card" style="width: 18rem;">
+        <img src="@group.strDrinkThumb" class="card-img-top" alt="...">
+        <div class="card-body">
+            <p class="card-title">@group.strDrink</p>
+        </div>
+    </div>
+
+    }
+    </div>
+</div>
+
+
+
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
